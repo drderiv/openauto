@@ -115,9 +115,9 @@ bool OMXVideoOutput::setupDisplayRegion()
     displayRegion.nVersion.nVersion = OMX_VERSION;
     displayRegion.nPortIndex = 90;
     displayRegion.layer = static_cast<OMX_S32>(configuration_->getOMXLayerIndex());
-    displayRegion.fullscreen = OMX_TRUE;
+    displayRegion.fullscreen = OMX_FALSE; // TRUE
     displayRegion.noaspect = OMX_TRUE;
-    displayRegion.set = static_cast<OMX_DISPLAYSETTYPE >(OMX_DISPLAY_SET_FULLSCREEN | OMX_DISPLAY_SET_NOASPECT | OMX_DISPLAY_SET_LAYER);    
+    displayRegion.set = static_cast<OMX_DISPLAYSETTYPE >(/*OMX_DISPLAY_SET_FULLSCREEN | */OMX_DISPLAY_SET_NOASPECT | OMX_DISPLAY_SET_LAYER);    
 
     return OMX_SetConfig(ilclient_get_handle(components_[VideoComponent::RENDERER]), OMX_IndexConfigDisplayRegion, &displayRegion) == OMX_ErrorNone;
 }

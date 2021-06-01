@@ -87,18 +87,18 @@ int main(int argc, char* argv[])
     startIOServiceWorkers(ioService, threadPool);
 
     QApplication qApplication(argc, argv);
-    const int width = QApplication::desktop()->width();
-    const int height = QApplication::desktop()->height();
+    const int width = 800; // QApplication::desktop()->width();
+    const int height = 480; // QApplication::desktop()->height();
     OPENAUTO_LOG(info) << "[OpenAuto] Display width: " << width;
     OPENAUTO_LOG(info) << "[OpenAuto] Display height: " << height;
 
     auto configuration = std::make_shared<autoapp::configuration::Configuration>();
 
     autoapp::ui::MainWindow mainWindow(configuration);
-    mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
+    // mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     autoapp::ui::SettingsWindow settingsWindow(configuration);
-    settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
+    // settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     settingsWindow.setFixedSize(width, height);
     settingsWindow.adjustSize();
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { system("touch /tmp/shutdown"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showNormal); // showFullScreen
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::show_tab1);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::loadClientList);
@@ -191,9 +191,10 @@ int main(int argc, char* argv[])
         OPENAUTO_LOG(info) << "[MainWindow] Day.";
     });
 
-    mainWindow.showFullScreen();
     mainWindow.setFixedSize(width, height);
-    mainWindow.adjustSize();
+    mainWindow.showNormal(); // showFullScreen();
+    // mainWindow.setFixedSize(width, height);
+    // mainWindow.adjustSize();
 
     aasdk::usb::USBWrapper usbWrapper(usbContext);
     aasdk::usb::AccessoryModeQueryFactory queryFactory(usbWrapper, ioService);

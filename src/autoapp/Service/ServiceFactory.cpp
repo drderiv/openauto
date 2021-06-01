@@ -121,7 +121,7 @@ IService::Pointer ServiceFactory::createInputService(aasdk::messenger::IMessenge
     }
 
     QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen == nullptr ? QRect(0, 0, 1, 1) : screen->geometry();
+    QRect screenGeometry = screen == nullptr ? QRect(0, 0, 1, 1) : QRect(0, 0, 800, 480); // screen->geometry();
     projection::IInputDevice::Pointer inputDevice(std::make_shared<projection::InputDevice>(*QApplication::instance(), configuration_, std::move(screenGeometry), std::move(videoGeometry)));
 
     return std::make_shared<InputService>(ioService_, messenger, std::move(inputDevice));
